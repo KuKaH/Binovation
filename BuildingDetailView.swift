@@ -15,12 +15,13 @@ struct BuildingDetailView: View {
         Spacer()
         
         ScrollView {
-            VStack(spacing: 50) {
+            VStack(spacing: 40) {
                 ForEach(floorData, id: \.name) { data in
                     SensorStatusRowView(floorName: data.name, capacity: data.capacity)
                 }
             }
             .padding()
+            .frame(maxWidth: .infinity, alignment: .center)
         }
         .navigationTitle(buildingName)
         .navigationBarTitleDisplayMode(.inline)

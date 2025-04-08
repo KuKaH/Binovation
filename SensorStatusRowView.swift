@@ -20,7 +20,7 @@ struct SensorStatusRowView: View {
     }
     
     var body: some View {
-        HStack {
+        HStack(spacing: 24) {
             Image(systemName: "trash.fill")
                 .resizable()
                 .frame(width: 30, height: 30)
@@ -35,8 +35,6 @@ struct SensorStatusRowView: View {
                     .foregroundStyle(.gray)
             }
             
-            Spacer()
-            
             VStack(alignment: .trailing, spacing: 4) {
                 ProgressView(value: Double(capacity), total: 100)
                     .progressViewStyle(LinearProgressViewStyle(tint: barColor))
@@ -45,7 +43,10 @@ struct SensorStatusRowView: View {
                     .font(.headline)
                     .foregroundStyle(barColor)
             }
+            .frame(width: 120, alignment: .trailing)
         }
+        .frame(maxWidth: .infinity)
+        .frame(height: 65)
         .padding()
         .background(Color.white)
         .cornerRadius(12)
