@@ -12,6 +12,8 @@ struct BuildingDetailView: View {
     let floorData: [(name: String, capacity: Int)]
                     
     var body: some View {
+        Spacer()
+        
         ScrollView {
             VStack(spacing: 50) {
                 ForEach(floorData, id: \.name) { data in

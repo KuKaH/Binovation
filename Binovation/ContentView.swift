@@ -19,6 +19,11 @@ struct ContentView: View {
                 .tabItem {
                     Label("통계", systemImage: "chart.bar.fill")
                 }
+            
+            NotificationView()
+                .tabItem {
+                    Label("알림", systemImage: "bell.fill")
+                }
         }
     }
 }
