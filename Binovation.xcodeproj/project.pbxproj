@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F7DF17BF2DA4EE6F00E210C2 /* SensorStatusRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DF17BE2DA4EE6F00E210C2 /* SensorStatusRowView.swift */; };
+		F7DF17C12DA4FED900E210C2 /* BuildingDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DF17C02DA4FED900E210C2 /* BuildingDetailView.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		F79CF9262DA44C2900353A14 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +32,8 @@
 		F79CF9152DA44C2600353A14 /* Binovation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Binovation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F79CF9252DA44C2900353A14 /* BinovationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BinovationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F79CF92F2DA44C2900353A14 /* BinovationUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BinovationUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F7DF17BE2DA4EE6F00E210C2 /* SensorStatusRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorStatusRowView.swift; sourceTree = "<group>"; };
+		F7DF17C02DA4FED900E210C2 /* BuildingDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildingDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -75,6 +82,8 @@
 		F79CF90C2DA44C2600353A14 = {
 			isa = PBXGroup;
 			children = (
+				F7DF17BE2DA4EE6F00E210C2 /* SensorStatusRowView.swift */,
+				F7DF17C02DA4FED900E210C2 /* BuildingDetailView.swift */,
 				F79CF9172DA44C2600353A14 /* Binovation */,
 				F79CF9282DA44C2900353A14 /* BinovationTests */,
 				F79CF9322DA44C2900353A14 /* BinovationUITests */,
@@ -236,6 +245,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F7DF17BF2DA4EE6F00E210C2 /* SensorStatusRowView.swift in Sources */,
+				F7DF17C12DA4FED900E210C2 /* BuildingDetailView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
