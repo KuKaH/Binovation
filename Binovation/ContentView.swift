@@ -25,6 +25,7 @@ struct ContentView: View {
                     Label("알림", systemImage: "bell.fill")
                 }
         }
+        .tint(Color.binovationBackground)
     }
 }
 
