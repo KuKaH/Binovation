@@ -33,7 +33,7 @@ struct HomeView: View {
                         TrashButtonView(color: .green, label: "교개원")
                     }
                 }
-                .padding(.horizontal, 50)
+                .padding(.horizontal, 30)
                 .padding(.bottom, 40)
                 
                 Spacer()
