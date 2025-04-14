@@ -11,7 +11,7 @@ import Combine
 
 struct HomeView: View {
     @StateObject private var viewModel = SensorViewModel()
-    @State private var selectedBuildingIndex: Int = 0
+    @State private var selectedBuilding: String = "도서관"
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -39,14 +39,14 @@ struct HomeView: View {
                 .font(.headline)
             
             Menu {
-                ForEach(0..<buildingList.count, id: \.self) { index in
-                    Button(buildingList[index].name) {
-                        selectedBuildingIndex = index
+                ForEach(Array(viewModel.sensorDataByBuilding.keys), id: \.self) { key in
+                    Button(key) {
+                        selectedBuilding = key
                     }
                 }
             } label: {
                 HStack {
-                    Text(buildingList[selectedBuildingIndex].name)
+                    Text(selectedBuilding)
                         .foregroundStyle(.primary)
                     Spacer()
                     Image(systemName: "chevron.down")
@@ -58,15 +58,39 @@ struct HomeView: View {
             
             ScrollView {
                 VStack(spacing: 30) {
-                    ForEach(buildingList[selectedBuildingIndex].floors, id: \.name) { floor in
-                        SensorStatusRowView(floorName: floor.name, capacity: floor.capacity)
+                    if let sensors = viewModel.sensorDataByBuilding[selectedBuilding] {
+                        ForEach(sensors) { sensor in
+                            SensorStatusRowView(
+                                floorName: convertDeviceNameToLabel(sensor.device_name),
+                                capacity: sensor.fill_percent
+                            )
+                        }
+                    } else {
+                        Text("해당 건물에 대한 데이터가 없습니다.")
+                            .foregroundStyle(.gray)
                     }
                 }
                 .padding(.top)
             }
+            
             Spacer()
         }
         .padding()
+        .onAppear {
+            viewModel.fetchSensorDate()
+        }
+    }
+    
+    func convertDeviceNameToLabel(_ name: String) -> String {
+        switch name {
+        case "Lib_floor1": return "도서관 1층"
+        case "Lib_floor2": return "도서관 2층"
+        case "Lib_floor3": return "도서관 3층"
+        case "Lib_floor4": return "도서관 4층"
+        case "Lib_floor5": return "도서관 5층"
+        case "Hum_floor1": return "인문관 1층"
+        default: return name
+        }
     }
 }
 

@@ -38,8 +38,8 @@ class SensorViewModel: ObservableObject {
                 if case let .failure(error) = completion {
                     print("에러 발생: \(error.localizedDescription)")
                 }
-            }, receiveValue: { [weak self ] sensors in
-                self?.sensors = sensors
+            }, receiveValue: { [weak self ] groupedData in
+                self?.sensorDataByBuilding = groupedData
             })
             .store(in: &cancellables)
     }
