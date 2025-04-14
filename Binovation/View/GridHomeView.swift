@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct HomeView: View {
+struct GridHomeView: View {
     var body: some View {
         NavigationStack {
             VStack {
@@ -44,6 +44,6 @@ struct HomeView: View {
     }
 }
 
-#Preview {
-    HomeView()
-}
+//#Preview {
+//    HomeView()
+//}
