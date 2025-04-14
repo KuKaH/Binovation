@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SensorData: Codable, Identifiable {
+struct SensorData: Codable, Identifiable, Equatable {
     var id: String { device_name }
     let device_name: String
     let distance: Double

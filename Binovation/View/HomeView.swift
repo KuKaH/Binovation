@@ -11,7 +11,7 @@ import Combine
 
 struct HomeView: View {
     @StateObject private var viewModel = SensorViewModel()
-    @State private var selectedBuilding: String = "도서관"
+    @State private var selectedBuilding: String = ""
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -78,6 +78,11 @@ struct HomeView: View {
         .padding()
         .onAppear {
             viewModel.fetchSensorDate()
+        }
+        .onChange(of: viewModel.sensorDataByBuilding) { newData in
+            if selectedBuilding.isEmpty, let firstKey = newData.keys.first {
+                selectedBuilding = firstKey
+            }
         }
     }
     
