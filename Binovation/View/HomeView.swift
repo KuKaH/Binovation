@@ -76,9 +76,6 @@ struct HomeView: View {
             Spacer()
         }
         .padding()
-        .onAppear {
-            viewModel.fetchSensorDate()
-        }
         .onChange(of: viewModel.sensorDataByBuilding) { newData in
             if selectedBuilding.isEmpty, let firstKey = newData.keys.first {
                 selectedBuilding = firstKey

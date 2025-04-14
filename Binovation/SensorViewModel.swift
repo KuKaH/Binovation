@@ -11,6 +11,12 @@ import Combine
 class SensorViewModel: ObservableObject {
     @Published var sensorDataByBuilding: [String: [SensorData]] = [:]
     private var cancellables = Set<AnyCancellable>()
+    private var timerCancellable: AnyCancellable?
+    
+    init() {
+        fetchSensorDate()
+        startPolling()
+    }
     
     func fetchSensorDate() {
         guard let url = URL(string: "http://3.107.139.2/sensors") else { return }
@@ -44,5 +50,17 @@ class SensorViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
+    private func startPolling() {
+        timerCancellable = Timer.publish(every: 600, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] _ in
+                print("타이머 트리거: 센서 데이터 갱신 시도")
+                self?.fetchSensorDate()
+            }
+    }
     
+    func stopPolling() {
+        timerCancellable?.cancel()
+        timerCancellable = nil
+    }
 }
