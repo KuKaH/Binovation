@@ -7,15 +7,29 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 struct HomeView: View {
+    @StateObject private var viewModel = SensorViewModel()
     @State private var selectedBuildingIndex: Int = 0
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("Binovation")
-                .font(.largeTitle)
-                .bold()
+            HStack {
+                Text("Binovation")
+                    .font(.largeTitle)
+                    .bold()
+                
+                Spacer()
+                
+                Button(action: {
+                    print("설정 버튼 눌림")
+                }) {
+                    Image(systemName: "gearshape.fill")
+                        .font(.title2)
+                        .foregroundStyle(.primary)
+                }
+            }
             
             Text("한국외국어대학교")
                 .font(.title)

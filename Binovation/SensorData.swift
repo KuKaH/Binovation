@@ -7,8 +7,12 @@
 
 import Foundation
 
-struct SensorData: Identifiable {
-    let id = UUID()
-    let height: Double
-    let timestamp: Date
+struct SensorData: Codable, Identifiable {
+    var id: String { device_name }
+    let device_name: String
+    let distance: Double
+    let date_time: String
+    let fill_percent: Int
+    let level: Int
+    let status: String
 }

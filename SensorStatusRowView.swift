@@ -35,18 +35,19 @@ struct SensorStatusRowView: View {
                     .foregroundStyle(.gray)
             }
             
-            VStack(alignment: .trailing, spacing: 4) {
+            HStack(spacing: 4) {
                 ProgressView(value: Double(capacity), total: 100)
                     .progressViewStyle(LinearProgressViewStyle(tint: barColor))
                     .frame(width: 100)
                 Text("\(capacity)")
                     .font(.headline)
                     .foregroundStyle(barColor)
+                    .padding(.leading, 12)
             }
-            .frame(width: 120, alignment: .trailing)
+            .frame(width: 140, alignment: .trailing)
         }
         .frame(maxWidth: .infinity)
-        .frame(height: 65)
+        .frame(height: 45)
         .padding()
         .background(Color.white)
         .cornerRadius(12)
