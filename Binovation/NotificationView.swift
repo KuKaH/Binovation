@@ -35,14 +35,12 @@ struct NotificationView: View {
             }
             .padding()
             
-            ScrollView {
-                VStack(alignment:. leading, spacing: 16) {
-                    Text("오늘")
-                        .font(.headline)
-                        .padding(.horizontal)
-                    
+            List {
+                Section(header: Text("오늘")) {
                     ForEach(todayAlerts) { alert in
                         NotificationCard(alert: alert)
+                            .listRowInsets(EdgeInsets())
+                            .listRowSeparator(.visible)
                             .swipeActions {
                                 Button(role: .destructive) {
                                     print("삭제")
@@ -51,19 +49,52 @@ struct NotificationView: View {
                                 }
                             }
                     }
-                    
-                    
-                    Text("이전 알림")
-                        .font(.headline)
-                        .padding(.horizontal)
-                        .padding(.top)
-                    
+                }
+                
+                Section(header: Text("이전 알림")) {
                     ForEach(previousAlerts) { alert in
                         NotificationCard(alert: alert)
+                            .listRowInsets(EdgeInsets())
+                            .listRowSeparator(.visible)
+                            .swipeActions {
+                                Button(role: .destructive) {
+                                    print("삭제")
+                                } label: {
+                                    Label("삭제", systemImage: "trash")
+                                }
+                            }
                     }
                 }
-                .padding(.bottom)
             }
+            .listStyle(.plain) // 테두리 없애기
+            //            ScrollView {
+            //                VStack(alignment:. leading, spacing: 16) {
+            //                    Text("오늘")
+            //                        .font(.headline)
+            //                        .padding(.horizontal)
+            //
+            //                    ForEach(todayAlerts) { alert in
+            //                        NotificationCard(alert: alert)
+            //                            .swipeActions {
+            //                                Button(role: .destructive) {
+            //                                    print("삭제")
+            //                                } label: {
+            //                                    Label("삭제", systemImage: "trash")
+            //                                }
+            //                            }
+            //                    }
+            //
+            //                    Text("이전 알림")
+            //                        .font(.headline)
+            //                        .padding(.horizontal)
+            //                        .padding(.top)
+            //
+            //                    ForEach(previousAlerts) { alert in
+            //                        NotificationCard(alert: alert)
+            //                    }
+            //                }
+            //                .padding(.bottom)
+            //            }
         }
     }
 }

@@ -11,13 +11,12 @@ struct NotificationCard: View {
     let alert: AlertItem
     
     var body: some View {
-        HStack(alignment: .top, spacing: 12) {
+        HStack(spacing: 12) {
             Image(systemName: alert.type.iconName)
                 .foregroundStyle(alert.type.color)
                 .font(.title2)
-                .padding(.top, 4)
             
-            VStack(alignment: .leading, spacing: 6) {
+            VStack(alignment: .leading, spacing: 4) {
                 Text(alert.message)
                     .font(.body)
                 Text(alert.time)
@@ -27,14 +26,9 @@ struct NotificationCard: View {
             
             Spacer()
         }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(10)
-        .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(alert.isHighlighted ? Color.blue : Color.clear, lineWidth: 2)
-        )
+        .padding(.vertical, 12)
         .padding(.horizontal)
+        .background(Color.white)
     }
 }
 
