@@ -9,10 +9,14 @@ import Foundation
 import SwiftUI
 
 struct HomeView: View {
-    @State private var selectedBuildingIndex: Int? = nil
+    @State private var selectedBuildingIndex: Int = 0
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
+            Text("Binovation")
+                .font(.largeTitle)
+                .bold()
+            
             Text("한국외국어대학교")
                 .font(.title)
                 .bold()
@@ -28,8 +32,8 @@ struct HomeView: View {
                 }
             } label: {
                 HStack {
-                    Text(selectedBuildingIndex == nil ? "장소를 선택해주세요." : buildingList[selectedBuildingIndex!].name)
-                        .foregroundStyle(selectedBuildingIndex == nil ? .gray : .primary)
+                    Text(buildingList[selectedBuildingIndex].name)
+                        .foregroundStyle(.primary)
                     Spacer()
                     Image(systemName: "chevron.down")
                 }
@@ -38,21 +42,20 @@ struct HomeView: View {
                 .cornerRadius(10)
             }
             
-            if let index = selectedBuildingIndex {
-                ScrollView {
-                    VStack(spacing: 30) {
-                        ForEach(buildingList[index].floors, id: \.name) { floor in
-                            SensorStatusRowView(floorName: floor.name, capacity: floor.capacity)
-                        }
+            ScrollView {
+                VStack(spacing: 30) {
+                    ForEach(buildingList[selectedBuildingIndex].floors, id: \.name) { floor in
+                        SensorStatusRowView(floorName: floor.name, capacity: floor.capacity)
                     }
-                    .padding(.top)
                 }
-            } else {
-                Spacer()
+                .padding(.top)
             }
-            
             Spacer()
         }
         .padding()
     }
+}
+
+#Preview {
+    HomeView()
 }
