@@ -58,6 +58,8 @@ struct HomeView: View {
             
             ScrollView {
                 VStack(spacing: 30) {
+                    Spacer(minLength: 0)
+                    
                     if let sensors = viewModel.sensorDataByBuilding[selectedBuilding] {
                         ForEach(sensors) { sensor in
                             SensorStatusRowView(
@@ -68,9 +70,13 @@ struct HomeView: View {
                     } else {
                         Text("해당 건물에 대한 데이터가 없습니다.")
                             .foregroundStyle(.gray)
+                            .frame(maxWidth: .infinity)
                     }
                 }
-                .padding(.top)
+            }
+            .refreshable {
+                print("Pull to Refresh triggered")
+                viewModel.fetchSensorDate()
             }
             
             Spacer()

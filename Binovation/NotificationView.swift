@@ -66,7 +66,10 @@ struct NotificationView: View {
                     }
                 }
             }
-            .listStyle(.plain) // 테두리 없애기
+            .listStyle(.plain)
+            .refreshable {
+                print("refresh!")
+            }// 테두리 없애기
             //            ScrollView {
             //                VStack(alignment:. leading, spacing: 16) {
             //                    Text("오늘")
