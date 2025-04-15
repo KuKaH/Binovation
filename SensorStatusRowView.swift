@@ -44,7 +44,7 @@ struct SensorStatusRowView: View {
                     .foregroundStyle(barColor)
                     .padding(.leading, 12)
             }
-            .frame(width: 140, alignment: .trailing)
+            .frame(width: 150, alignment: .trailing)
         }
         .frame(maxWidth: .infinity)
         .frame(height: 45)
