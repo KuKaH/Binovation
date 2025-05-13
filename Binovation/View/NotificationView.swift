@@ -17,7 +17,7 @@ struct NotificationView: View {
     @State private var selectedTab: NotificationTab = .complaint
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             HStack {
                 Spacer()
                 Text("알림")
@@ -34,7 +34,7 @@ struct NotificationView: View {
             .padding(.horizontal)
             .padding(.vertical, 10)
             
-            HStack {
+            HStack(spacing: 0) {
                 ForEach(NotificationTab.allCases, id: \.self) { tab in
                     Button(action: {
                         selectedTab = tab
@@ -45,7 +45,7 @@ struct NotificationView: View {
                                 .fontWeight(selectedTab == tab ? .bold : .regular)
                             Rectangle()
                                 .frame(height: 2)
-                                .foregroundStyle(.selectedTab == tab ? .black : .clear)
+                                .foregroundStyle(selectedTab == tab ? .black : .clear)
                         }
                         .frame(maxWidth: .infinity)
                     }
