@@ -16,27 +16,23 @@ struct CapacityView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             HStack {
-                Text("Binovation")
-                    .font(.largeTitle)
-                    .bold()
-                
                 Spacer()
                 
-                Button(action: {
-                    print("설정 버튼 눌림")
-                }) {
-                    Image(systemName: "gearshape.fill")
-                        .font(.title2)
-                        .foregroundStyle(.primary)
-                }
+                Text("Binovation")
+                    .font(.headline)
+                    .bold()
+            
+                Spacer()
             }
             
             Text("한국외국어대학교")
-                .font(.title)
+                .font(.title2)
                 .bold()
             
             Text("근무지")
                 .font(.headline)
+                .padding(.horizontal, 8)
+                .padding(.vertical, -12)
             
             Menu {
                 ForEach(Array(viewModel.sensorDataByBuilding.keys), id: \.self) { key in
@@ -51,9 +47,10 @@ struct CapacityView: View {
                     Spacer()
                     Image(systemName: "chevron.down")
                 }
-                .padding()
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
                 .background(Color(red: 225/255, green: 230/255, blue: 255/255))
-                .cornerRadius(10)
+                .cornerRadius(8)
             }
             
             ScrollView {
@@ -97,6 +94,7 @@ struct CapacityView: View {
         case "Lib_floor4": return "도서관 4층"
         case "Lib_floor5": return "도서관 5층"
         case "Hum_floor1": return "인문관 1층"
+        case "Lib_floor_test": return "테스트 1층"
         default: return name
         }
     }
