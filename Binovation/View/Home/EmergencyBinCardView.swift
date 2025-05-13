@@ -25,8 +25,9 @@ struct EmergencyBinCardView: View {
             }
             Spacer()
             Text(message)
-                .font(.subheadline)
+                .font(.system(size: 13))
                 .foregroundStyle(.white)
+                .frame(width: 125, height: 28)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 6)
                 .background(Color.red)
