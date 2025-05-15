@@ -59,7 +59,9 @@ struct HomeView: View {
                         }
                         
                         Text("예상 소요시간: 30분")
+                            .font(.spaceGrotest)
                         Text("처리해야 할 쓰레기통 개수: 4개")
+                            .font(.caveat)
                         
                         Divider()
                         
