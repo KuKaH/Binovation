@@ -34,24 +34,7 @@ struct CapacityView: View {
                 .padding(.horizontal, 8)
                 .padding(.vertical, -12)
             
-            Menu {
-                ForEach(Array(viewModel.sensorDataByBuilding.keys), id: \.self) { key in
-                    Button(key) {
-                        selectedBuilding = key
-                    }
-                }
-            } label: {
-                HStack {
-                    Text(selectedBuilding)
-                        .foregroundStyle(.primary)
-                    Spacer()
-                    Image(systemName: "chevron.down")
-                }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(Color(red: 225/255, green: 230/255, blue: 255/255))
-                .cornerRadius(8)
-            }
+            BuildingDropdown(selectedBuilding: $selectedBuilding, buildings: Array(viewModel.sensorDataByBuilding.keys))
             
             ScrollView {
                 VStack(spacing: 30) {

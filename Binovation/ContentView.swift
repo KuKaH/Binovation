@@ -40,14 +40,14 @@ struct ContentView: View {
             
             CapacityView()
                 .tabItem {
-                    Label("용량", systemImage: "star.fill")
+                    Label("용량", systemImage: "trash.fill")
                 }
                 .tag(3)
             
             
             RouteRecommendationView()
                 .tabItem {
-                    Label("동선 추천", systemImage: "house.fill")
+                    Label("동선 추천", systemImage: "point.bottomleft.forward.to.point.topright.scurvepath")
                 }
                 .tag(4)
         }
