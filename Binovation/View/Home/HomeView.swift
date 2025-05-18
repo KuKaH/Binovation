@@ -32,7 +32,7 @@ struct HomeView: View {
                         EmergencyBinCardView(
                             floor: "도서관 \(5 - index)층",
                             percent: 100 - (index * 10),
-                            message: index == 0 ? "지금 수거하세요!" : "30분 내에 수거 추천드려요!"
+                            message: index == 0 ? "지금 수거하세요!" : "30분 내에\n수거 추천드려요!"
                             )
                     }
                 }
