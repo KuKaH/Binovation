@@ -13,7 +13,6 @@ struct SensorData: Codable, Identifiable, Equatable {
     let distance: Double
     let date_time: String
     let fill_percent: Int
-    let level: Int
     let status: String
 }
 

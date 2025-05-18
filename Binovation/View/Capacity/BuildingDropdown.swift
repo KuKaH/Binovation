@@ -23,13 +23,14 @@ struct BuildingDropdown: View {
                 HStack {
                     Text(selectedBuilding.isEmpty ? "장소를 선택해주세요." : selectedBuilding)
                         .foregroundStyle(selectedBuilding.isEmpty ? .gray : .primary)
+                        .font(.caption2)
                     Spacer()
                     Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
                         .foregroundStyle(.gray)
                 }
                 .padding(.vertical, 6)
                 .padding(.horizontal, 12)
-                .background(Color(.systemGray6))
+                .background(Color(hex: "#DDE7F3"))
                 .cornerRadius(4)
                 .overlay(RoundedRectangle(cornerRadius: 4)
                     .stroke(Color.gray.opacity(0.5), lineWidth: 1)
@@ -48,8 +49,9 @@ struct BuildingDropdown: View {
                             Text(building)
                                 .padding(.vertical, 6)
                                 .padding(.horizontal, 12)
+                                .font(.caption2)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                .background(Color(.systemGray6))
+                                .background(Color(hex: "#DDE7F3"))
                         }
                         Divider()
                     }

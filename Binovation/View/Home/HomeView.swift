@@ -14,7 +14,7 @@ struct HomeView: View {
         ScrollView {
             VStack(spacing: 24) {
                 Text("Binovation")
-                    .font(.title)
+                    .font(.madimiOne)
                     .bold()
                     .padding(.top)
                 

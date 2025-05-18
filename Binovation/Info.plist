@@ -11,6 +11,7 @@
 	</dict>
 	<key>UIAppFonts</key>
 	<array>
+		<string>MadimiOne-Regular.ttf</string>
 		<string>Caveat-VariableFont_wght.ttf</string>
 		<string>SpaceGrotesk-VariableFont_wght.ttf</string>
 	</array>

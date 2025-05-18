@@ -30,7 +30,7 @@ struct EmergencyBinCardView: View {
                 .frame(width: 125, height: 28)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 6)
-                .background(Color.red)
+                .background(Color(hex: "#EF4444"))
                 .cornerRadius(8)
         }
         .padding()
