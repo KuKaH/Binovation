@@ -14,7 +14,7 @@ struct CapacityView: View {
     @State private var selectedBuilding: String = ""
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
+        VStack(alignment: .leading, spacing: 16) {
             HStack {
                 Spacer()
                 
@@ -29,15 +29,15 @@ struct CapacityView: View {
                 .font(.title2)
                 .bold()
             
-            Text("근무지")
-                .font(.headline)
-                .padding(.horizontal, 8)
-                .padding(.vertical, -12)
+//            Text("근무지")
+//                .font(.headline)
+//                .padding(.horizontal, 8)
+//                .padding(.vertical, -12)
             
             BuildingDropdown(selectedBuilding: $selectedBuilding, buildings: Array(viewModel.sensorDataByBuilding.keys))
             
             ScrollView {
-                VStack(spacing: 30) {
+                VStack(spacing: 50) {
                     Spacer(minLength: 0)
                     
                     if let sensors = viewModel.sensorDataByBuilding[selectedBuilding] {

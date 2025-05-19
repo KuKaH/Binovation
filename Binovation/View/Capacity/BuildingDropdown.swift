@@ -25,7 +25,7 @@ struct BuildingDropdown: View {
                         .foregroundStyle(selectedBuilding.isEmpty ? .gray : .primary)
                         .font(.notoSans(size: 16))
                     Spacer()
-                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                    Image(systemName: isExpanded ? "arrowtriangle.up.fill" : "arrowtriangle.down.fill")
                         .foregroundStyle(.gray)
                 }
                 .padding(.vertical, 6)

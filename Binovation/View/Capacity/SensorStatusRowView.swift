@@ -26,8 +26,9 @@ struct SensorStatusRowView: View {
                     .fill(Color(hex: "#D0E2F5"))
                     .frame(width: 70, height: 70)
                 
-                Image(systemName: "trash")
+                Image("bin")
                     .resizable()
+                    .aspectRatio(contentMode: .fit)
                     .frame(width: 30, height: 30)
                     .foregroundStyle(.blue)
             }
