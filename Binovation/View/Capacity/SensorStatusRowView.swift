@@ -34,6 +34,7 @@ struct SensorStatusRowView: View {
             }
             
             Text(floorName)
+                .frame(width: 100)
                 .font(.system(size: 20))
                 .padding(.leading, -10)
             
@@ -43,6 +44,7 @@ struct SensorStatusRowView: View {
                     .frame(width: 100, height: 8)
                     .scaleEffect(x: 1, y: 3, anchor: .center)
                 Text("\(capacity)")
+                    .frame(width: 30)
                     .font(.headline)
                     .foregroundStyle(barColor)
                     .padding(.leading, 12)

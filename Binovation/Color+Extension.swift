@@ -28,7 +28,15 @@ extension Color {
 }
 
 extension Font {
-    static let spaceGrotesk: Font = .custom("SpaceGrotesk-VariableFont_wght", size: 12)
-    static let madimiOne: Font = .custom("MadimiOne-Regular", size: 30)
-    static let notoSans: Font = .custom("NotoSansKR-VariableFont_wght", size: 16)
+    static func spaceGrotesk(size: CGFloat) -> Font {
+        .custom("SpaceGrotesk-VariableFont_wght", size: size)
+    }
+    
+    static func madimiOne(size: CGFloat) -> Font {
+        .custom("MadimiOne-Regular", size: size)
+    }
+    
+    static func notoSans(size: CGFloat) -> Font {
+        .custom("NotoSansKR-VariableFont_wght", size: size)
+    }
 }
