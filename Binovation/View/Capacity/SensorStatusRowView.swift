@@ -53,7 +53,6 @@ struct SensorStatusRowView: View {
         }
         .frame(maxWidth: .infinity)
         .frame(height: 45)
-        .padding(.leading, -20)
         .background(Color.white)
     }
 }
