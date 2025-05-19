@@ -9,6 +9,13 @@ import Foundation
 import SwiftUI
 
 struct StatisticView: View {
+    @StateObject private var viewModel = StatisticViewModel()
+    
+    @State private var selectedBuilding: String = "Lib"
+    @State private var showPicker: Bool = false
+    
+    let buildingOptions = ["Lib", "Human", "SocSci"]
+    
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
@@ -17,8 +24,16 @@ struct StatisticView: View {
                     .bold()
                 
                 HStack {
-                    Text("도서관 ▼")
-                        .font(.headline)
+                    Button(action: {
+                        showPicker.toggle()
+                    }) {
+                        HStack(spacing: 4) {
+                            Text(displayName(for: selectedBuilding))
+                                .font(.headline)
+                            Image(systemName: "chevron.down")
+                                .font(.caption)
+                        }
+                    }
                     Spacer()
                 }
                 .padding(.horizontal)
@@ -39,7 +54,17 @@ struct StatisticView: View {
                             .font(.caption)
                     }
                     
-                    BarChartView()
+                    if viewModel.isLoading {
+                        ProgressView()
+                    } else if let error = viewModel.errorMessage {
+                        Text("오류 : \(error)")
+                            .foregroundStyle(.red)
+                            .font(.caption)
+                    } else {
+                        let (labels, values) = viewModel.averageByDay(for: selectedBuilding)
+                        BarChartView(weekdayLables: labels, weekdayValues: values)
+                    }
+                    
                 }
                 .padding(.horizontal)
                 
@@ -65,6 +90,37 @@ struct StatisticView: View {
                 .padding(.bottom, 40)
             }
             .padding(.top)
+        }
+        .onAppear {
+            viewModel.fetchWeeklyAverages()
+        }
+        .sheet(isPresented: $showPicker) {
+            VStack {
+                Text("건물 선택")
+                    .font(.headline)
+                Picker("건물 선택", selection: $selectedBuilding) {
+                    ForEach(buildingOptions, id: \.self) { building in
+                        Text(displayName(for: building)).tag(building)
+                    }
+                }
+                .labelsHidden()
+                .pickerStyle(.wheel)
+                
+                Button("확인") {
+                    showPicker = false
+                }
+                .padding(.top)
+            }
+            .presentationDetents([.fraction(0.3)])
+        }
+    }
+    
+    func displayName(for building: String) -> String {
+        switch building {
+        case "Lib": return "도서관"
+        case "Human": return "인문관"
+        case "SocSci": return "사과관"
+        default: return building
         }
     }
 }

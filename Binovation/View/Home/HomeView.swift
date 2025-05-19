@@ -28,7 +28,7 @@ struct HomeView: View {
                             .foregroundStyle(.red)
                     }
                     
-                    ForEach(0..<3) { index in
+                    ForEach(0..<6) { index in
                         EmergencyBinCardView(
                             floor: "도서관 \(5 - index)층",
                             percent: 100 - (index * 10),
@@ -39,49 +39,8 @@ struct HomeView: View {
                 .padding()
                 .background(Color.red.opacity(0.1))
                 .cornerRadius(16)
-                
-                VStack(alignment: .leading, spacing: 16) {
-                    HStack {
-                        Text("최적 동선을 추천드립니다!")
-                            .font(.headline)
-                            .foregroundStyle(Color.blue)
-                        Spacer()
-                        Image(systemName: "figure.walk")
-                            .foregroundStyle(.blue)
-                    }
-                    
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                            Text("추천 동선")
-                                .bold()
-                            Spacer()
-                            Text("사회과학관 -> 도서관 -> 사이버관")
-                        }
-                        
-                        Text("예상 소요시간: 30분")
-                            .font(.caption)
-                        Text("처리해야 할 쓰레기통 개수: 4개")
-                            .font(.notoSans(size: 16))
-                        
-                        Divider()
-                        
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("세부사항").bold()
-                            Text("사회과학관 5층 -> 4층 -> 3층")
-                                .font(.system(size: 16))
-                            Text("사회과학관 5층 -> 1층")
-                                .font(.notoSans(size: 16))
-                            Text("사이버관 3층 -> 2층")
-                        }
-                    }
-                    .font(.subheadline)
-                }
-                .padding()
-                .background(Color.blue.opacity(0.1))
-                .cornerRadius(16)
             }
             .padding(.horizontal)
-            .padding(.bottom, 80)
         }
     }
 }
