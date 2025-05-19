@@ -6,24 +6,44 @@
 //
 
 import SwiftUI
+import Charts
+
+import SwiftUI
+import Charts
 
 struct LineChartView: View {
-    var body: some View {
-        HStack {
-            GeometryReader { geometry in
-                Path { path in
-                    path.move(to: CGPoint(x: 0, y: 80))
-                    path.addLine(to: CGPoint(x: 40, y: 50))
-                    path.addLine(to: CGPoint(x: 80, y: 60))
-                    path.addLine(to: CGPoint(x: 120, y: 30))
-                    path.addLine(to: CGPoint(x: 160, y: 70))
-                }
-                .stroke(Color.blue, lineWidth: 2)
-            }
-            .frame(width: 180, height: 100)
-        }
-        .frame(maxWidth: .infinity, alignment: .center)
+    // 임시 데이터: 0~23시, 40~100% 랜덤 적재량
+    let data: [HourlyTrashData] = (0..<24).map { hour in
+        HourlyTrashData(hour: hour, value: Double.random(in: 40...100))
     }
+
+    var body: some View {
+        ScrollView(.horizontal) {
+            Chart(data) { point in
+                LineMark(
+                    x: .value("시간", "\(point.hour)시"),
+                    y: .value("적재량", point.value)
+                )
+                .interpolationMethod(.catmullRom)
+                .lineStyle(StrokeStyle(lineWidth: 2))
+
+                PointMark(
+                    x: .value("시간", "\(point.hour)시"),
+                    y: .value("적재량", point.value)
+                )
+                .symbolSize(25)
+            }
+            .chartYScale(domain: 0...100)
+            .frame(width: 700, height: 180) // ✅ 24시간 충분히 표현되도록 넓게 설정
+        }
+        .frame(height: 200) // 외부 ScrollView 높이 제한
+    }
+}
+
+struct HourlyTrashData: Identifiable {
+    let id = UUID()
+    let hour: Int      // 0 ~ 23
+    let value: Double  // 적재량 (%)
 }
 
 #Preview {

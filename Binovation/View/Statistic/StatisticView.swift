@@ -46,13 +46,8 @@ struct StatisticView: View {
                 .padding(.horizontal)
                 
                 VStack(alignment: .leading, spacing: 8) {
-                    HStack {
                         Text("지난주 요약")
                             .bold()
-                        Spacer()
-                        Text("요약 전체보기")
-                            .font(.caption)
-                    }
                     
                     if viewModel.isLoading {
                         ProgressView()
@@ -61,21 +56,18 @@ struct StatisticView: View {
                             .foregroundStyle(.red)
                             .font(.caption)
                     } else {
-                        let (labels, values) = viewModel.averageByDay(for: selectedBuilding)
-                        BarChartView(weekdayLables: labels, weekdayValues: values)
+                        let chartData = viewModel.chartData(for: selectedBuilding)
+                        BarChartView(data: chartData)
+//                        let (labels, values) = viewModel.averageByDay(for: selectedBuilding)
+//                        BarChartView(weekdayLables: labels, weekdayValues: values)
                     }
                     
                 }
                 .padding(.horizontal)
                 
                 VStack(alignment: .leading, spacing: 8) {
-                    HStack {
                         Text("일일 통계")
                             .bold()
-                        Spacer()
-                        Text("요약 전체보기")
-                            .font(.caption)
-                    }
                     
                     LineChartView()
                 }

@@ -83,4 +83,9 @@ class StatisticViewModel: ObservableObject {
         
         return (labels, values)
     }
+    
+    func chartData(for building: String) -> [ChartPoint] {
+        let (labels, values) = averageByDay(for: building)
+        return zip(labels, values).map { ChartPoint(label: $0.0, value: $0.1)}
+    }
 }
