@@ -20,11 +20,10 @@ struct SensorStatusRowView: View {
     }
     
     var body: some View {
-        
         HStack(spacing: 24) {
             ZStack {
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(Color(red: 225/255, green: 230/255, blue: 255/255))
+                    .fill(Color(hex: "#D0E2F5"))
                     .frame(width: 70, height: 70)
                 
                 Image(systemName: "trash")
@@ -35,7 +34,7 @@ struct SensorStatusRowView: View {
             
             Text(floorName)
                 .frame(width: 100)
-                .font(.system(size: 20))
+                .font(.notoSans(size: 20))
                 .padding(.leading, -10)
             
             HStack(spacing: 4) {
