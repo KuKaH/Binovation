@@ -28,7 +28,7 @@ extension Color {
 }
 
 extension Font {
-    static let spaceGrotest: Font = .custom("SpaceGrotesk-VariableFont_wght", size: 12)
-    static let caveat: Font = .custom("Caveat-VariableFont_wght", size: 12)
+    static let spaceGrotesk: Font = .custom("SpaceGrotesk-VariableFont_wght", size: 12)
     static let madimiOne: Font = .custom("MadimiOne-Regular", size: 30)
+    static let notoSans: Font = .custom("NotoSansKR-VariableFont_wght", size: 16)
 }

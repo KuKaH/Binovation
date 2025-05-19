@@ -14,7 +14,7 @@ struct HomeView: View {
         ScrollView {
             VStack(spacing: 24) {
                 Text("Binovation")
-                    .font(.madimiOne)
+                    .font(.spaceGrotesk)
                     .bold()
                     .padding(.top)
                 
@@ -59,16 +59,18 @@ struct HomeView: View {
                         }
                         
                         Text("예상 소요시간: 30분")
-                            .font(.spaceGrotest)
+                            .font(.caption)
                         Text("처리해야 할 쓰레기통 개수: 4개")
-                            .font(.caveat)
+                            .font(.notoSans)
                         
                         Divider()
                         
                         VStack(alignment: .leading, spacing: 4) {
                             Text("세부사항").bold()
                             Text("사회과학관 5층 -> 4층 -> 3층")
+                                .font(.system(size: 16))
                             Text("사회과학관 5층 -> 1층")
+                                .font(.notoSans)
                             Text("사이버관 3층 -> 2층")
                         }
                     }
