@@ -23,12 +23,11 @@ struct BinovationSplashView: View {
                         .font(.madimiOne(size: 36))
                         .foregroundStyle(.white)
                     
-                    Image("bin")
+                    Image(systemName: "trash")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 24, height: 24)
                         .foregroundColor(.white)
-                        .padding(.horizontal, 4)
                     
                     Text("ovation")
                         .font(.madimiOne(size: 36))
@@ -38,7 +37,7 @@ struct BinovationSplashView: View {
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5 ) {
                     withAnimation {
-                        isActive = true
+                        isActive = false
                     }
                 }
             }
