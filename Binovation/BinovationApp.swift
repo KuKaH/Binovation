@@ -11,7 +11,7 @@ import SwiftUI
 struct BinovationApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            BinovationSplashView()
         }
     }
 }

@@ -38,7 +38,7 @@ struct HomeView: View {
                     }
                     
                     ForEach(homeVM.topUrgentBins, id: \.device_name) { bin in
-                        let (building, floor) = parseDeviceName(bin.device_name)
+                        let (building, floor) = SensorNameParser.parse(bin.device_name)
                         EmergencyBinCardView(floor: "\(building) \(floor)층", percent: bin.fill_percent, message: bin.fill_percent >= 90 ? "지금 수거하세요!" : "30분 내에\n수거 추천드려요!")
                     }
                 }
@@ -48,23 +48,6 @@ struct HomeView: View {
             }
             .padding(.horizontal)
         }
-    }
-    
-    private func parseDeviceName(_ name: String) -> (String, String) {
-        if name.contains("Lib") {
-            let parts = name.components(separatedBy: "_")
-            let floor = parts.last?.replacingOccurrences(of: "floor", with: "") ?? "?"
-            return ("도서관", floor)
-        } else if name.contains("Hum") {
-            let parts = name.components(separatedBy: "_")
-            let floor = parts.last?.replacingOccurrences(of: "floor", with: "") ?? "?"
-            return ("인문관", floor)
-        } else if name.contains("Sci") {
-            let parts = name.components(separatedBy: "_")
-            let floor = parts.last?.replacingOccurrences(of: "floor", with: "") ?? "?"
-            return ("사과관", floor)
-        }
-        return ("기타", "?")
     }
 }
 

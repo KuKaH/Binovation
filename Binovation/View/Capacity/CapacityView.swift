@@ -19,7 +19,7 @@ struct CapacityView: View {
                 Spacer()
                 
                 Text("Binovation")
-                    .font(.headline)
+                    .font(.notoSans(size: 20))
                     .bold()
             
                 Spacer()
@@ -43,7 +43,7 @@ struct CapacityView: View {
                     if let sensors = viewModel.sensorDataByBuilding[selectedBuilding] {
                         ForEach(sensors) { sensor in
                             SensorStatusRowView(
-                                floorName: convertDeviceNameToLabel(sensor.device_name),
+                                floorName: SensorNameParser.fullLabel(from: sensor.device_name),
                                 capacity: sensor.fill_percent
                             )
                         }
@@ -66,30 +66,6 @@ struct CapacityView: View {
             if selectedBuilding.isEmpty, let firstKey = newData.keys.first {
                 selectedBuilding = firstKey
             }
-        }
-    }
-    
-    func convertDeviceNameToLabel(_ name: String) -> String {
-        switch name {
-        case "Lib_floor1": return "도서관 1층"
-        case "Lib_floor2": return "도서관 2층"
-        case "Lib_floor3": return "도서관 3층"
-        case "Lib_floor4": return "도서관 4층"
-        case "Lib_floor5": return "도서관 5층"
-        case "Human_floor1": return "인문관 1층"
-        case "Human_floor2": return "인문관 2층"
-        case "Human_floor3": return "인문관 3층"
-        case "Human_floor4": return "인문관 4층"
-        case "Human_floor5": return "인문관 5층"
-        case "Human_floor6": return "인문관 6층"
-        case "SocSci_floor1": return "사과관 1층"
-        case "SocSci_floor2": return "사과관 2층"
-        case "SocSci_floor3": return "사과관 3층"
-        case "SocSci_floor4": return "사과관 4층"
-        case "SocSci_floor5": return "사과관 5층"
-        case "SocSci_floor6": return "사과관 6층"
-        case "Lib_floor_test": return "테스트 1층"
-        default: return name
         }
     }
 }
