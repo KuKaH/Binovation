@@ -37,8 +37,10 @@ class SensorViewModel: ObservableObject {
                         return "인문관"
                     } else if sensor.device_name.contains("Sci") {
                         return "사과관"
-                    } else if sensor.device_name.contains("Test") {
-                        return "테스트"
+                    } else if sensor.device_name.contains("Cyber") {
+                        return "사이버관"
+                    } else if sensor.device_name.contains("EDU") {
+                        return "교개원"
                     } else {
                         return "기타"
                     }

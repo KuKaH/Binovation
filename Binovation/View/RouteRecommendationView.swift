@@ -12,7 +12,7 @@ struct RouteRecommendationView: View {
         ScrollView {
             VStack(spacing: 24) {
                 Text("동선 추천")
-                    .font(.title)
+                    .font(.notoSans(size: 20))
                     .bold()
                     .padding(.top)
                 

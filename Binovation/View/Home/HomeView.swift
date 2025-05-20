@@ -48,6 +48,9 @@ struct HomeView: View {
             }
             .padding(.horizontal)
         }
+        .refreshable {
+            sensorVM.fetchSensorDate()
+        }
     }
 }
 

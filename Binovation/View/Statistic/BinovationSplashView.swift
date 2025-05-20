@@ -37,7 +37,7 @@ struct BinovationSplashView: View {
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5 ) {
                     withAnimation {
-                        isActive = false
+                        isActive = true
                     }
                 }
             }

@@ -34,7 +34,7 @@ struct SensorStatusRowView: View {
             }
             
             Text(floorName)
-                .frame(width: 100)
+                .frame(width: 110)
                 .font(.notoSans(size: 20))
                 .padding(.leading, -10)
             
