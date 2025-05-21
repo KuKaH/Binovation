@@ -20,7 +20,7 @@ struct SensorNameParser {
            } else if deviceName.contains("EDU") {
                return ("교개원", extractFloor(from: deviceName))
            } else {
-               return ("기타", "?")
+               return ("Test", "?")
            }
        }
     

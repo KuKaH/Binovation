@@ -17,57 +17,62 @@ struct NotificationView: View {
     @State private var selectedTab: NotificationTab = .complaint
     
     var body: some View {
-        VStack(spacing: 0) {
-            HStack {
-                Spacer()
-                Text("알림")
-                    .font(.headline)
-                    .foregroundStyle(.black)
-                Spacer()
-                Button(action: {
-                    //설정 화면 이동
-                }) {
-                    Image(systemName: "gearshape")
+        NavigationStack {
+            VStack(spacing: 0) {
+                HStack {
+                    Spacer()
+                    Text("알림")
+                        .font(.headline)
                         .foregroundStyle(.black)
-                }
-            }
-            .padding(.horizontal)
-            .padding(.vertical, 10)
-            
-            HStack(spacing: 0) {
-                ForEach(NotificationTab.allCases, id: \.self) { tab in
-                    Button(action: {
-                        selectedTab = tab
-                    }) {
-                        VStack(spacing: 4) {
-                            Text(tab.rawValue)
-                                .foregroundStyle(selectedTab == tab ? .black : .gray)
-                                .fontWeight(selectedTab == tab ? .bold : .regular)
-                            Rectangle()
-                                .frame(height: 2)
-                                .foregroundStyle(selectedTab == tab ? .black : .clear)
-                        }
-                        .frame(maxWidth: .infinity)
+                    Spacer()
+                    NavigationLink(destination: SettingView()) {
+                        Image(systemName: "gearshape")
+                            .foregroundStyle(.black)
                     }
                 }
+                .padding(.horizontal)
+                .padding(.vertical, 10)
+                
+                HStack(spacing: 0) {
+                    ForEach(NotificationTab.allCases, id: \.self) { tab in
+                        Button(action: {
+                            selectedTab = tab
+                        }) {
+                            VStack(spacing: 4) {
+                                Text(tab.rawValue)
+                                    .foregroundStyle(selectedTab == tab ? .black : .gray)
+                                    .fontWeight(selectedTab == tab ? .bold : .regular)
+                                Rectangle()
+                                    .frame(height: 2)
+                                    .foregroundStyle(selectedTab == tab ? .black : .clear)
+                            }
+                            .frame(maxWidth: .infinity)
+                        }
+                    }
+                }
+                .padding(.top, 5)
+                .background(Color.white)
+                
+                Divider()
+                
+                if selectedTab == .push {
+                    PushAlertView()
+                } else if selectedTab == .complaint {
+                    ComplaintView()
+                } else {
+                    Spacer()
+                    
+                    VStack(spacing: 8) {
+                        Image(systemName: "bell")
+                            .font(.system(size: 40))
+                            .foregroundStyle(.gray.opacity(0.3))
+                        Text("새로운 알림이 없어요")
+                            .foregroundStyle(.gray.opacity(0.5))
+                            .font(.subheadline)
+                    }
+                    Spacer()
+                }
             }
-            .padding(.top, 5)
-            .background(Color.white)
-            
-            Divider()
-            
-            Spacer()
-            
-            VStack(spacing: 8) {
-                Image(systemName: "bell")
-                    .font(.system(size: 40))
-                    .foregroundStyle(.gray.opacity(0.3))
-                Text("새로운 알림이 없어요")
-                    .foregroundStyle(.gray.opacity(0.5))
-                    .font(.subheadline)
-            }
-            
-            Spacer()
         }
     }
 }

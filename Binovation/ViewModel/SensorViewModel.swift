@@ -58,7 +58,7 @@ class SensorViewModel: ObservableObject {
     }
     
     private func startPolling() {
-        timerCancellable = Timer.publish(every: 1000000, on: .main, in: .common)
+        timerCancellable = Timer.publish(every: 60, on: .main, in: .common)
             .autoconnect()
             .sink { [weak self] _ in
                 print("타이머 트리거: 센서 데이터 갱신 시도")
