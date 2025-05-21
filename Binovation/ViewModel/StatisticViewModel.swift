@@ -88,4 +88,22 @@ class StatisticViewModel: ObservableObject {
         let (labels, values) = averageByDay(for: building)
         return zip(labels, values).map { ChartPoint(label: $0.0, value: $0.1)}
     }
+    
+    func summary(for building: String) -> (averageCount: String, peakHour: String) {
+        // 예시값. 필요시 분석 로직 추가
+        switch building {
+        case "Lib":
+            return ("3번", "오후 4시")
+        case "Human":
+            return ("4번", "오후 5시")
+        case "SocSci":
+            return ("5번", "오전 11시")
+        case "EDU":
+            return ("2번", "오후 2시")
+        case "Cyber":
+            return ("6번", "오후 1시")
+        default:
+            return ("-", "-")
+        }
+    }
 }

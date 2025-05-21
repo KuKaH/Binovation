@@ -14,7 +14,7 @@ struct StatisticView: View {
     @State private var selectedBuilding: String = "Lib"
     @State private var showPicker: Bool = false
     
-    let buildingOptions = ["Lib", "Human", "SocSci"]
+    let buildingOptions = ["Lib", "Human", "SocSci", "EDU", "Cyber"]
     
     var body: some View {
         ScrollView {
@@ -38,16 +38,16 @@ struct StatisticView: View {
                 }
                 .padding(.horizontal)
                 
+                let summary = viewModel.summary(for: selectedBuilding)
                 HStack(spacing: 20) {
-                    StatisticSummaryCardView(title: "일 평균 비움 횟수", value: "4번")
-                    
-                    StatisticSummaryCardView(title: "최다 수거 요청 시간", value: "오후 5시")
+                    StatisticSummaryCardView(title: "일 평균 비움 횟수", value: summary.averageCount)
+                    StatisticSummaryCardView(title: "최다 수거 요청 시간", value: summary.peakHour)
                 }
                 .padding(.horizontal)
                 
                 VStack(alignment: .leading, spacing: 8) {
-                        Text("지난주 요약")
-                            .bold()
+                    Text("지난주 요약")
+                        .bold()
                     
                     if viewModel.isLoading {
                         ProgressView()
@@ -58,16 +58,16 @@ struct StatisticView: View {
                     } else {
                         let chartData = viewModel.chartData(for: selectedBuilding)
                         BarChartView(data: chartData)
-//                        let (labels, values) = viewModel.averageByDay(for: selectedBuilding)
-//                        BarChartView(weekdayLables: labels, weekdayValues: values)
+                        //                        let (labels, values) = viewModel.averageByDay(for: selectedBuilding)
+                        //                        BarChartView(weekdayLables: labels, weekdayValues: values)
                     }
                     
                 }
                 .padding(.horizontal)
                 
                 VStack(alignment: .leading, spacing: 8) {
-                        Text("일일 통계")
-                            .bold()
+                    Text("일일 통계")
+                        .bold()
                     
                     LineChartView()
                 }
@@ -112,6 +112,8 @@ struct StatisticView: View {
         case "Lib": return "도서관"
         case "Human": return "인문관"
         case "SocSci": return "사과관"
+        case "EDU": return "교개원"
+        case "Cyber": return "사이버관"
         default: return building
         }
     }
