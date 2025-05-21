@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum NotificationTab: String, CaseIterable {
-    case all = "전체"
+//    case all = "전체"
     case complaint = "민원"
     case push = "푸시"
 }
