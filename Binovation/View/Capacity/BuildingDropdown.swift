@@ -10,6 +10,7 @@ import SwiftUI
 struct BuildingDropdown: View {
     @Binding var selectedBuilding: String
     let buildings: [String]
+    var placeholder: String = "장소를 선택해주세요."
     
     @State private var isExpanded = false
     
@@ -21,7 +22,7 @@ struct BuildingDropdown: View {
                 }
             }) {
                 HStack {
-                    Text(selectedBuilding.isEmpty ? "장소를 선택해주세요." : selectedBuilding)
+                    Text(selectedBuilding.isEmpty ? placeholder : selectedBuilding)
                         .foregroundStyle(selectedBuilding.isEmpty ? .gray : .primary)
                         .font(.notoSans(size: 16))
                     Spacer()

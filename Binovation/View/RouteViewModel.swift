@@ -20,7 +20,7 @@ class RouteViewModel: ObservableObject {
     private let buildingCodeMap: [String: String] = [
         "도서관": "Lib_floor1",
         "사회과학관": "SocSci_floor1",
-        "인문과학관": "Human_floor1",
+        "인문관": "Human_floor1",
         "사이버관": "Cyber_floor1",
         "교수개발원": "EDU_floor1"
     ]
@@ -37,6 +37,7 @@ class RouteViewModel: ObservableObject {
                 self.errorMessage = nil
             })
             .flatMap { buildingName -> AnyPublisher<RouteData, Error> in
+                print("flat map 진입: \(buildingName)")
                 guard let code = self.buildingCodeMap[buildingName] else {
                     return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
                 }

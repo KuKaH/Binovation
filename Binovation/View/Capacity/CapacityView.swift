@@ -29,17 +29,10 @@ struct CapacityView: View {
                 .font(.title2)
                 .bold()
             
-//            Text("근무지")
-//                .font(.headline)
-//                .padding(.horizontal, 8)
-//                .padding(.vertical, -12)
-            
             BuildingDropdown(selectedBuilding: $selectedBuilding, buildings: Array(viewModel.sensorDataByBuilding.keys))
             
             ScrollView {
                 VStack(spacing: 50) {
-                    Spacer(minLength: 0)
-                    
                     if let sensors = viewModel.sensorDataByBuilding[selectedBuilding] {
                         ForEach(sensors) { sensor in
                             SensorStatusRowView(
@@ -53,6 +46,7 @@ struct CapacityView: View {
                             .frame(maxWidth: .infinity)
                     }
                 }
+                .padding(.top, 16)
             }
             .refreshable {
                 print("Pull to Refresh triggered")
