@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F7CB15702DF17268009B9858 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = F7CB156F2DF17268009B9858 /* FirebaseAnalytics */; };
+		F7CB15722DF17268009B9858 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = F7CB15712DF17268009B9858 /* FirebaseMessaging */; };
 		F7DF17C12DA4FED900E210C2 /* BuildingDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DF17C02DA4FED900E210C2 /* BuildingDetailView.swift */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +72,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F7CB15722DF17268009B9858 /* FirebaseMessaging in Frameworks */,
+				F7CB15702DF17268009B9858 /* FirebaseAnalytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +135,8 @@
 			);
 			name = Binovation;
 			packageProductDependencies = (
+				F7CB156F2DF17268009B9858 /* FirebaseAnalytics */,
+				F7CB15712DF17268009B9858 /* FirebaseMessaging */,
 			);
 			productName = Binovation;
 			productReference = F79CF9152DA44C2600353A14 /* Binovation.app */;
@@ -214,6 +220,9 @@
 			);
 			mainGroup = F79CF90C2DA44C2600353A14;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F7CB156E2DF17268009B9858 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F79CF9162DA44C2600353A14 /* Products */;
 			projectDirPath = "";
@@ -588,6 +597,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F7CB156E2DF17268009B9858 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.14.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F7CB156F2DF17268009B9858 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F7CB156E2DF17268009B9858 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		F7CB15712DF17268009B9858 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F7CB156E2DF17268009B9858 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F79CF90D2DA44C2600353A14 /* Project object */;
 }
