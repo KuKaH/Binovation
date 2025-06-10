@@ -14,7 +14,7 @@ struct RouteRecommendationView: View {
     let buildingPositions: [String: CGPoint] = [
         "사회과학관": CGPoint(x: 105, y: 200),
         "도서관": CGPoint(x: 215, y: 215),
-        "사이버관": CGPoint(x: 280, y: 205),
+        "사이버관": CGPoint(x: 230, y: 205),
         "인문관": CGPoint(x: 75, y: 8),
         "교수개발원": CGPoint(x: 120, y: -15)
     ]
@@ -29,6 +29,49 @@ struct RouteRecommendationView: View {
                     .bold()
                     .padding(.top)
                 
+                //드롭다운
+                VStack(alignment: .leading) {
+                    Text("현재 위치")
+                        .font(.notoSans(size: 16))
+                        .bold()
+                        .padding(.leading)
+                    HStack(alignment: .top) {
+                        BuildingDropdown(selectedBuilding: $selectedBuilding,
+                                         buildings: buildings,
+                                         placeholder: "현재 위치를 선택해주세요."
+                        )
+                        .frame(height: 44)
+                        
+                        Button(action: {
+                            if !selectedBuilding.isEmpty {
+                                print("선택된 건물: \(selectedBuilding)")
+                                viewModel.fetchRoute(for: selectedBuilding)
+                            }
+                        }) {
+                            Text("추천받기")
+                                .font(.notoSans(size: 16))
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .frame(width: 100, height: 44)
+                    }
+                }
+                
+                ZStack {
+                    Image("HUFSMiniMap")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .cornerRadius(12)
+                        .shadow(radius: 4)
+                    
+                    ForEach(Array(viewModel.route?.buildingSequence.enumerated() ?? [].enumerated()), id: \.offset) { index, building in
+                        if let position = buildingPositions[building] {
+                            MarkerView(index: index)
+                                .position(x: position.x, y: position.y)
+                        }
+                    }
+                }
+                .frame(height: 300)
+                
                 HStack {
                     Image(systemName: "figure.walk")
                         .foregroundStyle(.blue)
@@ -38,10 +81,11 @@ struct RouteRecommendationView: View {
                     
                     Spacer()
                 }
-                .padding(.leading)
+                .padding(.horizontal, 16)
                 
-                if let route = viewModel.route {
-                    VStack(alignment: .leading, spacing: 8) {
+                
+                VStack(alignment: .leading, spacing: 8) {
+                    if let route = viewModel.route {
                         HStack {
                             Text("추천 동선")
                                 .bold()
@@ -60,54 +104,23 @@ struct RouteRecommendationView: View {
                                 Text(detail)
                             }
                         }
-                    }
-                    .font(.subheadline)
-                    .padding()
-                    .background(Color.blue.opacity(0.1))
-                    .cornerRadius(16)
-                    .padding(.horizontal, 10)
-                }
-                
-                //드롭다운
-                VStack(alignment: .leading) {
-                    
-                    HStack {
-                        
-                        Button(action: {
-                            if !selectedBuilding.isEmpty {
-                                print("선택된 건물: \(selectedBuilding)")
-                                viewModel.fetchRoute(for: selectedBuilding)
-                            }
-                        }) {
-                            Text("동선 추천 받기")
-                                .font(.notoSans(size: 16))
+                    } else {
+                        HStack {
+                            Image(systemName: "person.crop.circle.badge.questionmark")
+                                .foregroundStyle(.gray)
+                            Text("아직 동선을 추천받지 않았어요")
+                                .foregroundStyle(.gray)
                         }
-                        .buttonStyle(.borderedProminent)
-                        .frame(width: 150, height: 50)
-                    }
-                    
-                    BuildingDropdown(selectedBuilding: $selectedBuilding,
-                                     buildings: buildings,
-                                     placeholder: "현재 위치를 선택해주세요."
-                    )
-                    .padding(.bottom)
-                }
-                
-                ZStack {
-                    Image("HUFSMiniMap")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .cornerRadius(12)
-                        .shadow(radius: 4)
-                    
-                    ForEach(Array(viewModel.route?.buildingSequence.enumerated() ?? [].enumerated()), id: \.offset) { index, building in
-                        if let position = buildingPositions[building] {
-                            MarkerView(index: index)
-                                .position(x: position.x, y: position.y)
-                        }
+                        .padding(.top, 4)
                     }
                 }
-                .frame(height: 300)
+                .padding()
+                .frame(minHeight: 80)
+                .frame(minWidth: 100, maxWidth: .infinity)
+                .font(.subheadline)
+                .background(Color.blue.opacity(0.1))
+                .cornerRadius(16)
+                .padding(.horizontal, 16)
             }
             .padding(.bottom, 80)
         }
