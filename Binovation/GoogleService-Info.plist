@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyB5RAGcKoFYd1cToXlxi3cZaP8IZT4ETNc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>630214320672</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.junbeom.Binovation</string>
+	<key>PROJECT_ID</key>
+	<string>binovation-3ae58</string>
+	<key>STORAGE_BUCKET</key>
+	<string>binovation-3ae58.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:630214320672:ios:0f2c968be9aa463e919245</string>
+</dict>
+</plist>

@@ -52,6 +52,16 @@ struct ContentView: View {
                 .tag(4)
         }
         .tint(Color.binovationBackground)
+        .onAppear {
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
+                granted, error in
+                if granted {
+                    DispatchQueue.main.async {
+                        UIApplication.shared.registerForRemoteNotifications()
+                    }
+                }
+            }
+        }
     }
 }
 
