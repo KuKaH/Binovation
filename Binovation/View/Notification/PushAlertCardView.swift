@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PushAlertCardView: View {
-    let alert: PushAlert
+    let alert: CapacityAlert
     
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
@@ -20,8 +20,13 @@ struct PushAlertCardView: View {
                 Text(alert.message)
                     .font(.body)
                     .foregroundStyle(.black)
-                Text(alert.dateString)
-                    .font(.caption)
+                if let sub = alert.subMessage {
+                    Text(sub)
+                        .font(.caption)
+                        .foregroundStyle(.gray)
+                }
+                Text(alert.date.formatted(.dateTime.month().day().hour().minute()))
+                    .font(.caption2)
                     .foregroundStyle(.gray)
             }
             Spacer()

@@ -7,56 +7,16 @@
 
 import SwiftUI
 
-struct ComplaintAlert: Identifiable, Equatable {
-    let id = UUID()
-    let title: String
-    let message: String
-    let location: String
-    let date: Date
-    let category: String
-}
-
-class ComplaintAlertViewModel: ObservableObject {
-    @Published var todayAlerts: [ComplaintAlert] = []
-    @Published var previousAlerts: [ComplaintAlert] = []
-
-    func fetchAlerts() {
-        let now = Date()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy.MM.dd HH:mm"
-
-        let mock: [ComplaintAlert] = [
-            ComplaintAlert(
-                title: "기타 민원",
-                message: "쓰레기통 주변에 쓰레기들이 쌓여있어서 치워야 할 것 같아요.",
-                location: "인문관 4층 일반 쓰레기통",
-                date: now.addingTimeInterval(-3600),
-                category: "기타"
-            ),
-            ComplaintAlert(
-                title: "악취 민원",
-                message: "냄새가 심해요. 빠른 처리 부탁드립니다.",
-                location: "사회과학관 2층",
-                date: now.addingTimeInterval(-90000),
-                category: "악취"
-            )
-        ]
-
-        todayAlerts = mock.filter { Calendar.current.isDateInToday($0.date) }
-        previousAlerts = mock.filter { !Calendar.current.isDateInToday($0.date) }
-    }
-}
-
 struct ComplaintView: View {
-    @StateObject private var viewModel = ComplaintAlertViewModel()
+    @ObservedObject private var viewModel = PushAlertViewModel.shared
     @State private var selectedAlert: ComplaintAlert? = nil
     
     var body: some View {
         VStack {
-            if viewModel.todayAlerts.isEmpty && viewModel.previousAlerts.isEmpty {
+            if viewModel.complaintAlerts.isEmpty {
                 Spacer()
                 VStack(spacing: 8) {
-                    Image(systemName: "exclamationmakr.bubble")
+                    Image(systemName: "exclamationmark.bubble")
                         .font(.system(size: 40))
                         .foregroundStyle(.gray.opacity(0.3))
                     Text("새로운 민원이 없어요")
@@ -66,39 +26,30 @@ struct ComplaintView: View {
                 Spacer()
             } else {
                 List {
-                    if !viewModel.todayAlerts.isEmpty {
-                        Section(header: Text("오늘")) {
-                            ForEach(viewModel.todayAlerts) { alert in
-                                Button(action: {
-                                    selectedAlert = alert
-                                }) {
-                                    ComplaintAlertCardView(alert: alert)
-                                }
+                    Section(header: Text("오늘")) {
+                        ForEach(viewModel.complaintAlertsToday) { alert in
+                            Button(action: {
+                                selectedAlert = alert
+                            }) {
+                                ComplaintAlertCardView(alert: alert)
                             }
                         }
-                    }
-                    if !viewModel.previousAlerts.isEmpty {
-                        Section(header: Text("이전 알림")) {
-                            ForEach(viewModel.previousAlerts) { alert in
-                                Button(action: {
-                                    selectedAlert = alert
-                                }) {
-                                    ComplaintAlertCardView(alert: alert)
-                                }
+                     }
+                    
+                    Section(header: Text("이전 알림")) {
+                        ForEach(viewModel.complaintAlertsPast) { alert in
+                            Button(action: {
+                                selectedAlert = alert
+                            }) {
+                                ComplaintAlertCardView(alert: alert)
                             }
                         }
                     }
                 }
                 .listStyle(.plain)
-                .refreshable {
-                    viewModel.fetchAlerts()
                 }
             }
-        }
-        .onAppear {
-            viewModel.fetchAlerts()
-        }
-        .overlay {
+            .overlay {
             if let alert = selectedAlert {
                 ComplaintAlertPopup(alert: alert) {
                     selectedAlert = nil
@@ -118,7 +69,7 @@ struct ComplaintAlertCardView: View {
                 .font(.system(size: 20))
             
             VStack(alignment: .leading, spacing: 4) {
-                Text("\(alert.location) \(alert.category) 민원 접수!")
+                Text("\(alert.building) \(alert.floor)층 \(alert.content) 민원 접수!")
                     .font(.body)
                     .foregroundStyle(.black)
                 Text("현장 점검이 필요해요!")
@@ -148,7 +99,7 @@ struct ComplaintAlertPopup: View {
 
             VStack(alignment: .leading, spacing: 16) {
                 HStack {
-                    Text(alert.title)
+                    Text("\(alert.building) \(alert.floor)층")
                         .font(.headline)
                     Spacer()
                     Text(alert.date.formatted(date: .numeric, time: .shortened))
@@ -156,17 +107,13 @@ struct ComplaintAlertPopup: View {
                         .foregroundStyle(.gray)
                 }
 
-                Text(alert.location)
-                    .font(.subheadline)
-                    .foregroundStyle(.gray)
-
                 Divider()
 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("내용")
+                    Text("민원 내용")
                         .font(.caption)
                         .bold()
-                    Text(alert.message)
+                    Text(alert.content)
                 }
 
                 Button("닫기") {
@@ -183,10 +130,25 @@ struct ComplaintAlertPopup: View {
             .frame(maxWidth: 360)
             .shadow(radius: 10)
         }
+        .transition(.opacity.combined(with: .scale))
         .animation(.easeInOut, value: alert)
     }
 }
 
 #Preview {
-    ComplaintView()
+    let vm = PushAlertViewModel.shared
+    vm.complaintAlerts = ComplaintAlert.previewData
+    return ComplaintView()
+}
+
+
+extension ComplaintAlert {
+    static var previewData: [ComplaintAlert] {
+        let now = Date()
+        return [
+            ComplaintAlert(building: "인문관", floor: 4, content: "쓰레기 넘침", date: now),
+            ComplaintAlert(building: "사회과학관", floor: 2, content: "악취", date: Calendar.current.date(byAdding: .day, value: -1, to: now)!),
+            ComplaintAlert(building: "사과관", floor: 5, content: "벌레 발생", date: Calendar.current.date(byAdding: .day, value: -1, to: now)!)
+        ]
+    }
 }

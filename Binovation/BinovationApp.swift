@@ -20,7 +20,7 @@ struct BinovationApp: App {
     }
 }
 
-class AppDelegate: NSObject, UIApplicationDelegate{
+class AppDelegate: NSObject, UIApplicationDelegate {
     
     let gcmMessageIDKey = "gcm.message_id"
     
@@ -62,6 +62,18 @@ class AppDelegate: NSObject, UIApplicationDelegate{
         Messaging.messaging().apnsToken = deviceToken
     }
     
+    func sendTokenToServer(_ token: String) {
+           guard let url = URL(string: "http://3.107.139.2/trash/device-token/") else { return }
+           var request = URLRequest(url: url)
+           request.httpMethod = "POST"
+           request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+           
+           let json: [String: Any] = ["token": token]
+           request.httpBody = try? JSONSerialization.data(withJSONObject: json)
+
+           URLSession.shared.dataTask(with: request).resume()
+       }
+    
 }
 
 // Cloud Messaging...
@@ -71,6 +83,11 @@ extension AppDelegate: MessagingDelegate{
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         
         print("토큰을 받았다")
+        
+        if let token = fcmToken {
+            print("FCM token: \(token)")
+            sendTokenToServer(token)
+        }
         // Store this token to firebase and retrieve when to send message to someone...
         let dataDict: [String: String] = ["token": fcmToken ?? ""]
         

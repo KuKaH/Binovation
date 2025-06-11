@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PushAlertView: View {
-    @StateObject private var viewModel = PushAlertViewModel()
+    @StateObject private var viewModel = PushAlertViewModel.shared
     
     var body: some View {
         VStack {
@@ -42,17 +42,17 @@ struct PushAlertView: View {
                     }
                 }
                 .listStyle(.plain)
-                .refreshable {
-                    viewModel.fetchAlerts()
-                }
+
             }
-        }
-        .onAppear {
-            viewModel.fetchAlerts()
         }
     }
 }
 
 #Preview {
-    PushAlertView()
+    let vm = PushAlertViewModel.shared
+    vm.capacityAlerts = [
+        CapacityAlert(building: "인문관", floor: 4, capacity: 90, date: Date()),
+        CapacityAlert(building: "도서관", floor: 2, capacity: 100, date: Date())
+    ]
+    return PushAlertView()
 }
