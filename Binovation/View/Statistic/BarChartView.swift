@@ -35,6 +35,7 @@ struct BarChartView: View {
                     .foregroundColor(.primary)
             }
         }
+        .chartYScale(domain: [0, 100])
         .chartYAxis {
             AxisMarks(position: .leading)
         }

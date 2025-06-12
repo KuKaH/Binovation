@@ -1,18 +1,11 @@
-//
-//  PushAlertView.swift
-//  Binovation
-//
-//  Created by 홍준범 on 5/13/25.
-//
-
 import SwiftUI
 
 struct PushAlertView: View {
-    @StateObject private var viewModel = PushAlertViewModel.shared
+    @ObservedObject var viewModel: PushAlertViewModel
     
     var body: some View {
         VStack {
-            if viewModel.todayAlerts.isEmpty && viewModel.previousAlerts.isEmpty {
+            if viewModel.alerts.isEmpty {
                 Spacer()
                 VStack {
                     Image(systemName: "bell")
@@ -25,11 +18,18 @@ struct PushAlertView: View {
                 Spacer()
             } else {
                 List {
-                    if !viewModel.todayAlerts.isEmpty {
-                        Section(header: Text("오늘")) {
-                            ForEach(viewModel.todayAlerts) { alert in
-                                PushAlertCardView(alert: alert)
-                            }
+                    Section(header: HStack {
+                        Text("오늘")
+                        Spacer()
+                        Button("알림 비우기") {
+                            print("푸시 알림 비우기")
+                        }
+                        .font(.caption)
+                        .foregroundStyle(.blue)
+                    })
+                    {
+                        ForEach(viewModel.todayAlerts) { alert in
+                            PushAlertCardView(alert: alert)
                         }
                     }
                     
@@ -42,17 +42,14 @@ struct PushAlertView: View {
                     }
                 }
                 .listStyle(.plain)
-
             }
         }
-    }
-}
+        .onAppear {
+            viewModel.fetchPushAlerts()
+        }
+        .refreshable {
+            viewModel.fetchPushAlerts()
+        }
 
-#Preview {
-    let vm = PushAlertViewModel.shared
-    vm.capacityAlerts = [
-        CapacityAlert(building: "인문관", floor: 4, capacity: 90, date: Date()),
-        CapacityAlert(building: "도서관", floor: 2, capacity: 100, date: Date())
-    ]
-    return PushAlertView()
+    }
 }

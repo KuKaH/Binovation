@@ -2,67 +2,65 @@
 //  PushAlertViewModel.swift
 //  Binovation
 //
-//  Created by 홍준범 on 5/13/25.
+//  Created by 홍준범 on 6/12/25.
 //
 
 import Foundation
 import Combine
-import SwiftUICore
 import SwiftUI
 
-protocol PushAlert: Identifiable {
-    var id: UUID { get }
-    var building: String { get }
-    var floor: Int { get }
-    var date: Date { get }
-}
-
-struct ComplaintAlert: PushAlert, Equatable {
+struct PushAlert: Identifiable, Decodable, Equatable {
     let id = UUID()
-    let building: String
-    let floor: Int
-    let content: String
-    let date: Date
-}
+    let deviceName: String
+    let currentFill: Double
+    let message: String
+    let date: Date  // 없지만 UI 구분용으로 현재 시간 기준 생성
 
-struct CapacityAlert: PushAlert, Equatable {
-    let id = UUID()
-    let building: String
-    let floor: Int
-    let capacity: Int
-    let date: Date
-    
-    var message: String {
-        if capacity >= 100 {
-            return "\(building) \(floor)층 일반 쓰레기통이 가득 찼어요!"
-        } else {
-            return  "\(building) \(floor)층 일반 쓰레기통이 곧 가득 차요!"
+    enum CodingKeys: String, CodingKey {
+        case deviceName = "device_name"
+        case currentFill = "current_fill"
+        case message
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.deviceName = try container.decode(String.self, forKey: .deviceName)
+        self.currentFill = try container.decode(Double.self, forKey: .currentFill)
+        self.message = try container.decode(String.self, forKey: .message)
+        self.date = Date() // 서버에 날짜 없으므로 수신 시점으로 처리
+    }
+
+    var building: String {
+        if deviceName.contains("Lib") { return "도서관" }
+        if deviceName.contains("Human") { return "인문관" }
+        if deviceName.contains("Cyber") { return "사이버관" }
+        if deviceName.contains("Sci") { return "사과관" }
+        if deviceName.contains("EDU") { return "교개원" }
+        return "기타"
+    }
+
+    var floor: String {
+        if let match = deviceName.split(separator: "floor").last {
+            return "\(match)층"
         }
+        return "-"
     }
-    
-    var subMessage: String? {
-        if capacity >= 100 {
-            return "지금 수거하세요!"
-        } else {
-            return "30분 내에 수거 추천드려요!"
-        }
+
+    var level: AlertLevel {
+        currentFill >= 100 ? .danger : .warning
     }
-    
-    var level: Level {
-        capacity >= 100 ? .danger : .warning
-    }
-    
-    enum Level {
+
+    enum AlertLevel {
         case warning, danger
-        
-        var iconName: String {
+
+        var icon: String {
             switch self {
             case .warning: return "exclamationmark.triangle.fill"
-            case .danger: return  "exclamationmark.octagon.fill"
+            case .danger: return "exclamationmark.octagon.fill"
             }
         }
-        
-        var iconColor: SwiftUI.Color {
+
+        var color: Color {
             switch self {
             case .warning: return .orange
             case .danger: return .red
@@ -71,66 +69,34 @@ struct CapacityAlert: PushAlert, Equatable {
     }
 }
 
-
 class PushAlertViewModel: ObservableObject {
     static let shared = PushAlertViewModel()
-    
-    @Published var complaintAlerts: [ComplaintAlert] = []
-    
-    var complaintAlertsToday: [ComplaintAlert] {
-        complaintAlerts.filter { Calendar.current.isDateInToday($0.date)}
+    @Published var alerts: [PushAlert] = []
+
+    private var cancellables = Set<AnyCancellable>()
+
+    func fetchPushAlerts() {
+        guard let url = URL(string: "http://3.107.139.2/trash/emergency/") else { return }
+
+        URLSession.shared.dataTaskPublisher(for: url)
+            .map(\.data)
+            .decode(type: [PushAlert].self, decoder: JSONDecoder())
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                if case let .failure(error) = completion {
+                    print("❌ 푸시 알림 로딩 실패: \(error)")
+                }
+            }, receiveValue: { [weak self] data in
+                self?.alerts = data
+            })
+            .store(in: &cancellables)
     }
-    
-    var complaintAlertsPast: [ComplaintAlert] {
-        complaintAlerts.filter { !Calendar.current.isDateInToday($0.date)}
+
+    var todayAlerts: [PushAlert] {
+        alerts.filter { Calendar.current.isDateInToday($0.date) }
     }
-    
-    @Published var capacityAlerts: [CapacityAlert] = []
-    
-    var todayAlerts: [CapacityAlert] {
-        capacityAlerts.filter { Calendar.current.isDateInToday($0.date)}
-    }
-    
-    var previousAlerts: [CapacityAlert] {
-        capacityAlerts.filter { !Calendar.current.isDateInToday($0.date)}
-    }
-    
-    private init() {}
-    
-    func handleComplaintPush(from userInfo: [AnyHashable: Any]) {
-        guard
-            let building = userInfo["building"] as? String,
-            let floor = userInfo["floor"] as? Int,
-            let content = userInfo["content"] as? String
-        else {
-            print("민원 알림 파싱 실패")
-            return
-        }
-        
-        let alert = ComplaintAlert(building: building,
-                                   floor: floor,
-                                   content: content,
-                                   date: Date())
-        
-        DispatchQueue.main.async {
-            self.complaintAlerts.insert(alert, at: 0)
-        }
-    }
-    
-    func handleCapacityPush(from userInfo: [AnyHashable: Any]) {
-        guard
-            let building = userInfo["building"] as? String,
-            let floor = userInfo["floor"] as? Int,
-            let capacity = userInfo["capacity"] as? Int
-        else {
-            print("용량 알림 파싱 실패")
-            return
-        }
-        
-        let alert = CapacityAlert(building: building, floor: floor, capacity: capacity, date: Date())
-        
-        DispatchQueue.main.async {
-            self.capacityAlerts.insert(alert, at: 0)
-        }
+
+    var previousAlerts: [PushAlert] {
+        alerts.filter { !Calendar.current.isDateInToday($0.date) }
     }
 }

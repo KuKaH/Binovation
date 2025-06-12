@@ -5,6 +5,7 @@
 //  Created by 홍준범 on 4/8/25.
 //
 
+import Foundation
 import SwiftUI
 import Firebase
 import FirebaseMessaging
@@ -21,7 +22,6 @@ struct BinovationApp: App {
 }
 
 class AppDelegate: NSObject, UIApplicationDelegate {
-    
     let gcmMessageIDKey = "gcm.message_id"
     
     // 앱이 켜졌을 때
@@ -63,16 +63,16 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     }
     
     func sendTokenToServer(_ token: String) {
-           guard let url = URL(string: "http://3.107.139.2/trash/device-token/") else { return }
-           var request = URLRequest(url: url)
-           request.httpMethod = "POST"
-           request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-           
-           let json: [String: Any] = ["token": token]
-           request.httpBody = try? JSONSerialization.data(withJSONObject: json)
-
-           URLSession.shared.dataTask(with: request).resume()
-       }
+        guard let url = URL(string: "http://3.107.139.2/trash/device-token/") else { return }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let json: [String: Any] = ["token": token]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: json)
+        
+        URLSession.shared.dataTask(with: request).resume()
+    }
     
 }
 
@@ -82,19 +82,12 @@ extension AppDelegate: MessagingDelegate{
     // fcm 등록 토큰을 받았을 때
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         
-        print("토큰을 받았다")
-        
         if let token = fcmToken {
             print("FCM token: \(token)")
             sendTokenToServer(token)
         }
         // Store this token to firebase and retrieve when to send message to someone...
         let dataDict: [String: String] = ["token": fcmToken ?? ""]
-        
-        // Store token in Firestore For Sending Notifications From Server in Future...
-        
-        print(dataDict)
-        
     }
 }
 
@@ -110,18 +103,30 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                 -> Void) {
         
         let userInfo = notification.request.content.userInfo
-        print("알림 수신됨 - 포그라운드")
-        print(userInfo)
+        let content = notification.request.content
+        print("🔔 [Foreground] Title: \(content.title)")
+        print("🔔 [Foreground] Body: \(content.body)")
+        print("🔔 [Foreground] userInfo: \(content.userInfo)")
         
+        if let category = userInfo["category"] as? String {
+            switch category {
+            case "민원":
+                print("민원 알림 감지됨")
+                if AppTabManager.shared.selectedAppTab == .notification,
+                   NotificationTabManager.shared.selectedTab == .complaint {
+                    ComplaintViewModel.shared.fetchComplaints()
+                }
+            case "용량":
+                print("용량 감지됨")
+                if AppTabManager.shared.selectedAppTab == .notification,
+                   NotificationTabManager.shared.selectedTab == .push {
+                    PushAlertViewModel.shared.fetchPushAlerts()
+                }
         
-        // Do Something With MSG Data...
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID: \(messageID)")
+            default:
+                break
+            }
         }
-        
-        
-        print(userInfo)
-        
         completionHandler([[.banner, .badge, .sound]])
     }
     
@@ -130,16 +135,23 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
-        print("사용자가 알림 클릭")
-        print(userInfo)
         
-        // Do Something With MSG Data...
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID: \(messageID)")
+        let content = response.notification.request.content
+        print("📲 [Clicked] Title: \(content.title)")
+        print("📲 [Clicked] Body: \(content.body)")
+        print("📲 [Clicked] userInfo: \(content.userInfo)")
+        
+        if let category = userInfo["category"] as? String {
+            AppTabManager.shared.selectedAppTab = .notification
+            switch category {
+            case "민원":
+                NotificationTabManager.shared.selectedTab = .complaint
+            case "용량":
+                NotificationTabManager.shared.selectedTab = .push
+            default:
+                break
+            }
         }
-        
-        print(userInfo)
-        
         completionHandler()
     }
 }

@@ -10,14 +10,7 @@ import SwiftUI
 import Combine
 
 struct HomeView: View {
-    @StateObject private var sensorVM = SensorViewModel()
-    @StateObject private var homeVM: HomeViewModel
-    
-    init() {
-        let sensor = SensorViewModel()
-        _sensorVM = StateObject(wrappedValue: sensor)
-        _homeVM = StateObject(wrappedValue: HomeViewModel(sensorViewModel: sensor))
-    }
+    @StateObject private var homeVM = HomeViewModel()
     
     var body: some View {
         ScrollView {
@@ -37,9 +30,12 @@ struct HomeView: View {
                             .foregroundStyle(.red)
                     }
                     
-                    ForEach(homeVM.topUrgentBins, id: \.device_name) { bin in
-                        let (building, floor) = SensorNameParser.parse(bin.device_name)
-                        EmergencyBinCardView(floor: "\(building) \(floor)층", percent: bin.fill_percent, message: bin.fill_percent >= 90 ? "지금 수거하세요!" : "30분 내에\n수거 추천드려요!")
+                    ForEach(homeVM.topUrgentBins) { bin in
+                        EmergencyBinCardView(
+                            floor: bin.parsedLocation,
+                            percent: Int(bin.current_fill),
+                            message: bin.message
+                        )
                     }
                 }
                 .padding()
@@ -48,12 +44,15 @@ struct HomeView: View {
             }
             .padding(.horizontal)
         }
+        .onAppear {
+            homeVM.fetchUrgentBins()
+        }
         .refreshable {
-            sensorVM.fetchSensorDate()
+            homeVM.fetchUrgentBins()
         }
     }
 }
 
-#Preview {
-    HomeView()
-}
+//#Preview {
+//    HomeView()
+//}

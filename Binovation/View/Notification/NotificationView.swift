@@ -14,7 +14,9 @@ enum NotificationTab: String, CaseIterable {
 }
 
 struct NotificationView: View {
-    @State private var selectedTab: NotificationTab = .complaint
+    @ObservedObject private var tabManager = NotificationTabManager.shared
+    @StateObject private var complaintVM = ComplaintViewModel()
+    @StateObject private var pushVM = PushAlertViewModel()
     
     var body: some View {
         NavigationStack {
@@ -36,15 +38,15 @@ struct NotificationView: View {
                 HStack(spacing: 0) {
                     ForEach(NotificationTab.allCases, id: \.self) { tab in
                         Button(action: {
-                            selectedTab = tab
+                            tabManager.selectedTab = tab
                         }) {
                             VStack(spacing: 4) {
                                 Text(tab.rawValue)
-                                    .foregroundStyle(selectedTab == tab ? .black : .gray)
-                                    .fontWeight(selectedTab == tab ? .bold : .regular)
+                                    .foregroundStyle(tabManager.selectedTab == tab ? .black : .gray)
+                                    .fontWeight(tabManager.selectedTab == tab ? .bold : .regular)
                                 Rectangle()
                                     .frame(height: 2)
-                                    .foregroundStyle(selectedTab == tab ? .black : .clear)
+                                    .foregroundStyle(tabManager.selectedTab == tab ? .black : .clear)
                             }
                             .frame(maxWidth: .infinity)
                         }
@@ -55,10 +57,10 @@ struct NotificationView: View {
                 
                 Divider()
                 
-                if selectedTab == .push {
-                    PushAlertView()
-                } else if selectedTab == .complaint {
-                    ComplaintView()
+                if tabManager.selectedTab == .push {
+                    PushAlertView(viewModel: PushAlertViewModel.shared)
+                } else if tabManager.selectedTab == .complaint {
+                    ComplaintView(viewModel: ComplaintViewModel.shared)
                 } else {
                     Spacer()
                     

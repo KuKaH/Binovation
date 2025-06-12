@@ -30,32 +30,32 @@ struct RouteRecommendationView: View {
                     .padding(.top)
                 
                 //드롭다운
-                VStack(alignment: .leading) {
-                    Text("현재 위치")
-                        .font(.notoSans(size: 16))
-                        .bold()
-                        .padding(.leading)
-                    HStack(alignment: .top) {
-                        BuildingDropdown(selectedBuilding: $selectedBuilding,
-                                         buildings: buildings,
-                                         placeholder: "현재 위치를 선택해주세요."
-                        )
-                        .frame(height: 44)
-                        
-                        Button(action: {
-                            if !selectedBuilding.isEmpty {
-                                print("선택된 건물: \(selectedBuilding)")
-                                viewModel.fetchRoute(for: selectedBuilding)
+                    VStack(alignment: .leading) {
+                        Text("현재 위치")
+                            .font(.notoSans(size: 16))
+                            .bold()
+                            .padding(.leading)
+                        HStack(alignment: .top) {
+                            BuildingDropdown(selectedBuilding: $selectedBuilding,
+                                             buildings: buildings,
+                                             placeholder: "현재 위치를 선택해주세요."
+                            )
+                            .frame(height: 44)
+                            
+                            Button(action: {
+                                if !selectedBuilding.isEmpty {
+                                    print("선택된 건물: \(selectedBuilding)")
+                                    viewModel.fetchRoute(for: selectedBuilding)
+                                }
+                            }) {
+                                Text("추천받기")
+                                    .font(.notoSans(size: 16))
                             }
-                        }) {
-                            Text("추천받기")
-                                .font(.notoSans(size: 16))
+                            .buttonStyle(.borderedProminent)
+                            .frame(width: 100, height: 44)
                         }
-                        .buttonStyle(.borderedProminent)
-                        .frame(width: 100, height: 44)
                     }
-                }
-                
+
                 ZStack {
                     Image("HUFSMiniMap")
                         .resizable()
