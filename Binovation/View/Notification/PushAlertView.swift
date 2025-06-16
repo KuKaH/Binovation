@@ -18,15 +18,8 @@ struct PushAlertView: View {
                 Spacer()
             } else {
                 List {
-                    Section(header: HStack {
-                        Text("오늘")
-                        Spacer()
-                        Button("알림 비우기") {
-                            print("푸시 알림 비우기")
-                        }
-                        .font(.caption)
-                        .foregroundStyle(.blue)
-                    })
+                    Section(header:
+                        Text("오늘"))
                     {
                         ForEach(viewModel.todayAlerts) { alert in
                             PushAlertCardView(alert: alert)

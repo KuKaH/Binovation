@@ -116,8 +116,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                    NotificationTabManager.shared.selectedTab == .complaint {
                     ComplaintViewModel.shared.fetchComplaints()
                 }
-            case "용량":
-                print("용량 감지됨")
+            case "푸시":
+                print("푸시 감지됨")
                 if AppTabManager.shared.selectedAppTab == .notification,
                    NotificationTabManager.shared.selectedTab == .push {
                     PushAlertViewModel.shared.fetchPushAlerts()
@@ -146,7 +146,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             switch category {
             case "민원":
                 NotificationTabManager.shared.selectedTab = .complaint
-            case "용량":
+            case "푸시":
                 NotificationTabManager.shared.selectedTab = .push
             default:
                 break

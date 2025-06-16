@@ -59,15 +59,30 @@ class ComplaintViewModel: ObservableObject {
     }
     
     func clearAllComplaints() {
-        guard let url = URL(string: "http://3.107.139.2/trash/alerts/clear/complaint") else { return }
+        guard let url = URL(string: "http://3.107.139.2/trash/complaintlist/") else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
         
+        // ✅ 여기부터 디버깅용 코드 추가
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("❌ Error: \(error)")
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                print("📡 Status code: \(httpResponse.statusCode)")
+            }
+            
+            if let data = data, let responseText = String(data: data, encoding: .utf8) {
+                print("📦 Response body:\n\(responseText)")
+            }
+        }.resume()
+        
         URLSession.shared.dataTaskPublisher(for: request)
             .tryMap { output in
                 guard let response = output.response as? HTTPURLResponse,
-                      response.statusCode == 204 else {
+                (200...299).contains(response.statusCode) else {
                     throw URLError(.badServerResponse)
                 }
                 return ()

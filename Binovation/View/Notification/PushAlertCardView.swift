@@ -29,11 +29,12 @@ struct PushAlertCardView: View {
         .padding(.vertical, 8)
     }
     
-    // ✅ 한글 날짜 포맷 함수
-    private func formattedDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ko_KR") // 🇰🇷 한국어로 설정
-        formatter.dateFormat = "M월 d일 HH:mm" // 예: 6월 12일 15:42
-        return formatter.string(from: date)
-    }
+    // ✅ 날짜를 UTC 기준으로 그대로 보여주는 함수
+       private func formattedDate(_ date: Date) -> String {
+           let formatter = DateFormatter()
+           formatter.locale = Locale(identifier: "ko_KR")
+           formatter.timeZone = TimeZone(secondsFromGMT: 0) // 🌐 UTC 시간대 그대로 출력
+           formatter.dateFormat = "M월 d일 HH:mm"
+           return formatter.string(from: date)
+       }
 }

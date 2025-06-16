@@ -3,6 +3,7 @@ import SwiftUI
 struct ComplaintView: View {
     @ObservedObject var viewModel: ComplaintViewModel
     @State private var selectedComplaint: Complaint? = nil
+    @State private var showDeleteAlert = false
     
     var body: some View {
         VStack {
@@ -24,7 +25,15 @@ struct ComplaintView: View {
                             Text("오늘")
                             Spacer()
                             Button("알림 비우기") {
-                                viewModel.clearAllComplaints()
+                                showDeleteAlert = true
+                            }
+                            .alert("정말 알림을 비우시겠습니까?", isPresented: $showDeleteAlert) {
+                                Button("비우기", role: .destructive) {
+                                    viewModel.clearAllComplaints()
+                                }
+                                Button("취소", role: .cancel) { }
+                            } message: {
+                                Text("이 작업은 되돌릴 수 없습니다.")
                             }
                             .font(.caption)
                             .foregroundStyle(.blue)

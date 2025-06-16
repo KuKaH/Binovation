@@ -13,10 +13,10 @@ struct RouteRecommendationView: View {
     
     let buildingPositions: [String: CGPoint] = [
         "사회과학관": CGPoint(x: 105, y: 200),
-        "도서관": CGPoint(x: 215, y: 215),
+        "도서관": CGPoint(x: 210, y: 215),
         "사이버관": CGPoint(x: 230, y: 205),
-        "인문관": CGPoint(x: 75, y: 8),
-        "교수개발원": CGPoint(x: 120, y: -15)
+        "인문관": CGPoint(x: 70, y: 8),
+        "교수개발원": CGPoint(x: 115, y: -15)
     ]
     
     @StateObject private var viewModel = RouteViewModel()
@@ -40,7 +40,6 @@ struct RouteRecommendationView: View {
                                              buildings: buildings,
                                              placeholder: "현재 위치를 선택해주세요."
                             )
-                            .frame(height: 44)
                             
                             Button(action: {
                                 if !selectedBuilding.isEmpty {
@@ -52,7 +51,7 @@ struct RouteRecommendationView: View {
                                     .font(.notoSans(size: 16))
                             }
                             .buttonStyle(.borderedProminent)
-                            .frame(width: 100, height: 44)
+                            .frame(width: 100, height: 44, alignment: .top)
                         }
                     }
 
