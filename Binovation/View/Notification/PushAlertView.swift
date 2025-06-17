@@ -21,18 +21,17 @@ struct PushAlertView: View {
                     Section(header:
                         Text("오늘"))
                     {
-                        ForEach(viewModel.todayAlerts) { alert in
+                        ForEach(viewModel.alerts) { alert in
                             PushAlertCardView(alert: alert)
                         }
                     }
-                    
-                    if !viewModel.previousAlerts.isEmpty {
-                        Section(header: Text("이전 알림")) {
-                            ForEach(viewModel.previousAlerts) { alert in
-                                PushAlertCardView(alert: alert)
-                            }
-                        }
-                    }
+//                    if !viewModel.previousAlerts.isEmpty {
+//                        Section(header: Text("이전 알림")) {
+//                            ForEach(viewModel.previousAlerts) { alert in
+//                                PushAlertCardView(alert: alert)
+//                            }
+//                        }
+//                    }
                 }
                 .listStyle(.plain)
             }

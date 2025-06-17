@@ -83,8 +83,14 @@ class PushAlertViewModel: ObservableObject {
             .map(\.data)
             .decode(type: [PushAlert].self, decoder: {
                 let decoder = JSONDecoder()
-                decoder.dateDecodingStrategy = .iso8601
-                return decoder
+                // DateFormatter로 대체
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"  // ISO와 호환
+                    formatter.locale = Locale(identifier: "en_US_POSIX")
+                    formatter.timeZone = TimeZone(identifier: "Asia/Seoul")  // ✅ 이게 드디어 잘 적용됨
+
+                    decoder.dateDecodingStrategy = .formatted(formatter)
+                    return decoder
             }())
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
@@ -93,16 +99,16 @@ class PushAlertViewModel: ObservableObject {
                 }
             }, receiveValue: { [weak self] data in
                 print(data)
-                self?.alerts = data
+                self?.alerts = data.sorted { $0.date > $1.date }
             })
             .store(in: &cancellables)
     }
 
-    var todayAlerts: [PushAlert] {
-        alerts.filter { Calendar.current.isDateInToday($0.date) }
-    }
-
-    var previousAlerts: [PushAlert] {
-        alerts.filter { !Calendar.current.isDateInToday($0.date) }
-    }
+//    var todayAlerts: [PushAlert] {
+//        alerts.filter { Calendar.current.isDateInToday($0.date) }
+//    }
+//
+//    var previousAlerts: [PushAlert] {
+//        alerts.filter { !Calendar.current.isDateInToday($0.date) }
+//    }
 }
